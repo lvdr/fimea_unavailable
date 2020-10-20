@@ -1,24 +1,51 @@
 import * as React from 'react';
 import './App.css';
 
-export function App(): React.ReactNode {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import { IDrugRecordService } from "./IDrugRecordService";
+import { IDrugRecord } from "./IDrugRecord";
+import { DrugRecordComponent } from "./DrugRecordComponent";
+
+export class App extends React.Component<AppProps, AppState> {
+  constructor(props: AppProps) {
+    super(props);
+
+    this.state = { };
+  }
+
+  componentDidMount() {
+    this.props.drugRecordService.getAllDrugs()
+      .then((drugs) => {
+        this.setState({
+          drugRecords: drugs
+        });
+      });
+  }
+
+  render() {
+    let drugList = undefined;
+    if (this.state.drugRecords) {
+      drugList = this.state.drugRecords.map((value) => {
+        return (<li>
+          <DrugRecordComponent record={value} />
+        </li>);
+      });
+    }
+
+    return (
+      <div className="App">
+        <ul>
+          {drugList}
+        </ul>
+      </div>
+    );
+  }
+
 }
 
-export default App;
+export interface AppProps {
+  drugRecordService: IDrugRecordService;
+}
+
+export interface AppState {
+  drugRecords?: IDrugRecord[];
+}

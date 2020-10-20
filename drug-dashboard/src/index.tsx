@@ -1,12 +1,18 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
+import { App } from './App';
 import * as serviceWorker from './serviceWorker';
+import { OnlineDetectionService } from "./OnlineDetectionService";
+import { DrugRecordServiceFactory } from "./DrugRecordServiceFactory";
+
+let onlineDetectionService = new OnlineDetectionService();
+let drugRecordServiceFactory = new DrugRecordServiceFactory(onlineDetectionService);
+let drugRecordsService = drugRecordServiceFactory.getDrugRecordService();
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <App drugRecordService={drugRecordsService}/>
   </React.StrictMode>,
   document.getElementById('root')
 );
