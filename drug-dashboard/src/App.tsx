@@ -2,14 +2,16 @@ import * as React from 'react';
 import './App.css';
 import { initializeIcons } from 'office-ui-fabric-react/lib/Icons';
 import { Fabric } from 'office-ui-fabric-react/lib/Fabric';
+import { TextField } from 'office-ui-fabric-react/lib/TextField';
 import {
   DetailsList,
   DetailsListLayoutMode,
   IColumn,
+  CheckboxVisibility,
+  SelectionMode,
 } from 'office-ui-fabric-react/lib/DetailsList';
 import { IDrugRecordService } from "./IDrugRecordService";
 import { IDrugRecord } from "./IDrugRecord";
-import { DrugRecordComponent } from "./DrugRecordComponent";
 export class App extends React.Component<AppProps, AppState> {
   private _columns: IColumn[];
 
@@ -43,7 +45,7 @@ export class App extends React.Component<AppProps, AppState> {
       minWidth: 100,
      }, {
       key: "startDate",
-      name: "Unavailable staring",
+      name: "Unavailable starting",
       fieldName: "unavailabilityStart",
       data: "string",
       minWidth: 150,
@@ -57,26 +59,40 @@ export class App extends React.Component<AppProps, AppState> {
 
     initializeIcons();
 
-    this.state = { };
+    this.state = {drugRecords: [],
+                  visibleDrugRecords: [],
+                 };
   }
 
   componentDidMount() {
     this.props.drugRecordService.getAllDrugs()
       .then((drugs) => {
         this.setState({
-          drugRecords: drugs
-        });
+          drugRecords: drugs,
+	  visibleDrugRecords: drugs
+	});
       });
   }
 
   render() {
     return (
+      <Fabric>
+        <TextField label="Filter:" onChange={this.filter} />
         <DetailsList
-          items={this.state.drugRecords || []}
+          items={this.state.visibleDrugRecords || []}
           columns={this._columns}
           layoutMode={DetailsListLayoutMode.justified}
+          checkboxVisibility={CheckboxVisibility.hidden}
+          selectionMode={SelectionMode.none}
         />
+      </Fabric>
     );
+  }
+
+  filter = (ev: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>, text?: string) => {
+    this.setState({
+      visibleDrugRecords: text ? this.state.drugRecords.filter(i => i.drugName.toLowerCase().indexOf(text) > -1) : this.state.drugRecords,
+    });
   }
 
 }
@@ -86,5 +102,6 @@ export interface AppProps {
 }
 
 export interface AppState {
-  drugRecords?: IDrugRecord[];
+  drugRecords: IDrugRecord[];
+  visibleDrugRecords: IDrugRecord[];
 }
