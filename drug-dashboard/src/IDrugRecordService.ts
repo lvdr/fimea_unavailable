@@ -1,5 +1,5 @@
-import {IDrugRecord} from "./IDrugRecord";
+import {ITimestampedDrugRecords} from "./ITimestampedDrugRecords";
 
 export interface IDrugRecordService {
-  getAllDrugs(): Promise<IDrugRecord[]>;
+  getAllDrugs(): Promise<ITimestampedDrugRecords>;
 }

@@ -1,8 +1,10 @@
 import { IDrugRecordService } from "./IDrugRecordService";
 import { IDrugRecord } from "./IDrugRecord";
+import { ITimestampedDrugRecords } from "./ITimestampedDrugRecords";
 
 export class MockDrugRecordService implements IDrugRecordService {
   constructor(records?: IDrugRecord[] | undefined) {
+    // TODO: also take timestamp
     if (records) {
       this.records = records;
     } else {
@@ -10,11 +12,15 @@ export class MockDrugRecordService implements IDrugRecordService {
     }
   }
 
-  async getAllDrugs(): Promise<IDrugRecord[]> {
-    return this.records;
+  async getAllDrugs(): Promise<ITimestampedDrugRecords> {
+    return {
+      read_date: this.defaultTimestamp,
+      unavailable_meds: this.records,
+    };
   }
 
   private records: IDrugRecord[];
+  private readonly defaultTimestamp: string = "1.1.1980";
   private readonly defaultRecords: IDrugRecord[] = [
     {
       drugName:            "SIRIUS MILOTIC",

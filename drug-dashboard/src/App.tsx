@@ -61,15 +61,18 @@ export class App extends React.Component<AppProps, AppState> {
 
     this.state = {drugRecords: [],
                   visibleDrugRecords: [],
+                  readDate: "",
                  };
   }
 
   componentDidMount() {
     this.props.drugRecordService.getAllDrugs()
-      .then((drugs) => {
+      .then((timestampedDrugs) => {
+        console.log(timestampedDrugs);
         this.setState({
-          drugRecords: drugs,
-	  visibleDrugRecords: drugs
+          drugRecords: timestampedDrugs.unavailable_meds,
+	  visibleDrugRecords: timestampedDrugs.unavailable_meds,
+          readDate: timestampedDrugs.read_date,
 	});
       });
   }
@@ -102,6 +105,7 @@ export interface AppProps {
 }
 
 export interface AppState {
-  drugRecords: IDrugRecord[];
+  drugRecords:        IDrugRecord[];
   visibleDrugRecords: IDrugRecord[];
+  readDate:           string;
 }
