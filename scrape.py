@@ -5,15 +5,15 @@ from datetime import datetime
 from io import StringIO
 
 FIMEA_URL = "https://www.fimea.fi/laakehaut_ja_luettelot/saatavuushairio-uusi"
-RELEVANT_FIELDS = ['drugname',
+RELEVANT_FIELDS = {'drugname': "drugName",
 #                   'dateofnotice',
 #                   'updated_notice',
-                   'packagesize',
-                   'drugform',
-                   'str',
-                   'availability_ending',
+                   'packagesize': "packageSize",
+                   'drugform': "drugForm",
+                   'str': "strength",
+                   'availability_ending': "unavailabilityEnd",
 #                   'licenseholder',
-                   'availability_starting',
+                   'availability_starting': "unavailabilityStart",
 #                   'firstnotice',
 #                   'vnr',
 #                   'active_ingredients',
@@ -21,7 +21,7 @@ RELEVANT_FIELDS = ['drugname',
 #                   'storage_obligation',
 #                   'atcclass',
 #                   'license_info_giver'
-                  ]
+                  }
 
 def main():
     with urllib.request.urlopen(FIMEA_URL) as response:
@@ -46,8 +46,8 @@ def main():
     stripped_meds = []
     for medication in medications:
         stripped_med = {}
-        for field in RELEVANT_FIELDS:
-            stripped_med[field] = medication[field]
+        for (field, replacement) in RELEVANT_FIELDS.items():
+            stripped_med[replacement] = medication[field]
         stripped_meds.append(stripped_med)
 
     json_toplevel = {'read_date': str(datetime.now().date()),
