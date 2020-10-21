@@ -28,7 +28,7 @@ export class App extends React.Component<AppProps, AppState> {
       minWidth: 300,
      }, {
       key: "size",
-      name: "Package name",
+      name: "Package size",
       fieldName: "packageSize",
       data: "string",
       minWidth: 100,
