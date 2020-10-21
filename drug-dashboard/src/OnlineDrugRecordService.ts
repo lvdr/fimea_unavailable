@@ -1,5 +1,4 @@
 import { IDrugRecordService } from "./IDrugRecordService";
-import { IDrugRecord } from "./IDrugRecord";
 import { ITimestampedDrugRecords } from "./ITimestampedDrugRecords";
 
 export class OnlineDrugRecordService implements IDrugRecordService {

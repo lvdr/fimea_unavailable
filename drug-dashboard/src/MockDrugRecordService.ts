@@ -3,8 +3,7 @@ import { IDrugRecord } from "./IDrugRecord";
 import { ITimestampedDrugRecords } from "./ITimestampedDrugRecords";
 
 export class MockDrugRecordService implements IDrugRecordService {
-  constructor(records?: IDrugRecord[] | undefined) {
-    // TODO: also take timestamp
+  constructor(records?: ITimestampedDrugRecords | undefined) {
     if (records) {
       this.records = records;
     } else {
@@ -13,16 +12,13 @@ export class MockDrugRecordService implements IDrugRecordService {
   }
 
   async getAllDrugs(): Promise<ITimestampedDrugRecords> {
-    return {
-      read_date: this.defaultTimestamp,
-      unavailable_meds: this.records,
-    };
+    return this.records;
   }
 
-  private records: IDrugRecord[];
-  private readonly defaultTimestamp: string = "1.1.1980";
-  private readonly defaultRecords: IDrugRecord[] = [
-    {
+  private records: ITimestampedDrugRecords;
+  private readonly defaultRecords: ITimestampedDrugRecords = {
+    readDate: "1.1.1980",
+    unavailableMeds: [{
       drugName:            "SIRIUS MILOTIC",
       packageSize:         "197",
       drugForm:            "purutabletti",
@@ -57,6 +53,6 @@ export class MockDrugRecordService implements IDrugRecordService {
       strength:            "40 mg/ml",
       unavailabilityStart: "10.5.1980",
       unavailabilityEnd:   "11.6.1980",
-    }
-  ];
+    }],
+  };
 }

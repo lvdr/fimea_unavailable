@@ -1,6 +1,7 @@
 import * as React from 'react';
 import './App.css';
 import { initializeIcons } from 'office-ui-fabric-react/lib/Icons';
+import { Stack, IStackStyles } from 'office-ui-fabric-react/lib/Stack';
 import { Fabric } from 'office-ui-fabric-react/lib/Fabric';
 import { TextField } from 'office-ui-fabric-react/lib/TextField';
 import {
@@ -70,17 +71,21 @@ export class App extends React.Component<AppProps, AppState> {
       .then((timestampedDrugs) => {
         console.log(timestampedDrugs);
         this.setState({
-          drugRecords: timestampedDrugs.unavailable_meds,
-	  visibleDrugRecords: timestampedDrugs.unavailable_meds,
-          readDate: timestampedDrugs.read_date,
+          drugRecords: timestampedDrugs.unavailableMeds,
+	  visibleDrugRecords: timestampedDrugs.unavailableMeds,
+          readDate: timestampedDrugs.readDate,
 	});
       });
   }
 
   render() {
+    const stackStyles: Partial<IStackStyles> = { root: { width: 650 } };
     return (
       <Fabric>
-        <TextField label="Filter:" onChange={this.filter} />
+        <Stack styles={stackStyles}>
+          <p>Last updated: {this.state.readDate}</p>
+          <TextField label="Filter:" onChange={this.filter} />
+        </Stack>
         <DetailsList
           items={this.state.visibleDrugRecords || []}
           columns={this._columns}

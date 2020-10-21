@@ -50,8 +50,8 @@ def main():
             stripped_med[replacement] = medication[field]
         stripped_meds.append(stripped_med)
 
-    json_toplevel = {'read_date': str(datetime.now().date()),
-                     'unavailable_meds': stripped_meds}
+    json_toplevel = {'readDate': str(datetime.now().date()),
+                     'unavailableMeds': stripped_meds}
 
     with open("medications.json", 'w') as json_file:
         json.dump(json_toplevel, json_file)
